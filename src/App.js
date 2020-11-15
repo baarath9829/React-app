@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Profile from './components/Profile'
+import {Jumbotron,Container,Row} from 'react-bootstrap'
 
 function App() {
+  const [initialAmount,setInitialAmount] = useState(1000);
+  const [name, setName] = useState("baarath");
+  
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Jumbotron>
+        <h1> Burn out Chart </h1>
+      </Jumbotron>
+      <Container>
+        <Row>
+            <Profile name={name} initialAmount={initialAmount}/>
+        </Row>
+      </Container>
+      
     </div>
   );
 }
