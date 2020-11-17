@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Graph from './Graph';
 
 const Inputform = ({initialAmount}) => {
+
     const [startDate, setStartDate] = useState(new Date());
     const [amount,setAmount] = useState(0);
     const [data,setData] = useState([{x:0,y:initialAmount}]);
@@ -32,11 +33,48 @@ const Inputform = ({initialAmount}) => {
             </InputGroup>
             </Col>  
                 <Col>
-                 <Button varient="Primary" onClick= {(e)=>{
+                 <Button variant="success" onClick= {(e)=>{
                      const lasty = data[data.length - 1].y;
                      setData([...data,{x:startDate.getDate(),y:lasty-amount}])
                      setAmount(0);
                  }}> Submit </Button>
+                </Col>
+                <Col>
+                 <Button variant="warning" onClick= {(e)=>{
+                     //Updation
+                     //since data is const 
+                     //duplicating to edit
+                     let newData = data.filter(()=>{return true});
+                     for (let i=0;i<newData.length;i++){
+                         if(newData[i].x === startDate.getDate()){
+                             // since x=0 will always be defined and startdate cant be 0
+                             // i-1 will not be undefined 
+                             // so actuall amount = previous amount - current amount 
+                             newData[i].y = newData[i-1].y - amount;
+                         }
+                     }
+                     setData(newData);
+                 }}> Update </Button>
+                </Col>
+                <Col>
+                 <Button variant="danger" onClick= {(e)=>{
+                     //Deletion
+                     //since data is const 
+                     //duplicating to edit
+                     let newData = data.filter(()=>{return true});
+                      //const index = newData.indexOf(startDate.getDate());
+                     //since newdata is a array of object 
+                     //object should be used in indexof which we cant 
+                     //so using this ...
+                    
+                     for (let i=0;i<newData.length;i++){
+                        if(newData[i].x === startDate.getDate()){
+                            console.log(newData.splice(i,1));
+                            //alert("entry deleted");
+                        }
+                    }
+                    setData(newData);
+                 }}> Delete </Button>
                 </Col>
                 </Row>
                 <Row>
