@@ -4,11 +4,63 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Graph from './Graph';
 
-const Inputform = ({initialAmount}) => {
-
+const Inputform = ({name,initialAmount,chartdata,getchart}) => {
+    const postchart = async () => {
+        const data = {
+            name: name,
+            day: startDate.getDate(),
+            expense: amount
+        }
+        const request = {
+            method : 'POST', 
+            mode : 'cors',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        //console.log(request);
+        const response = await fetch(`http://localhost:8000/chart`,request);
+        alert("your data has been submited");
+    }
+    const putchart = async () => {
+        const data = {
+            name: name,
+            day: startDate.getDate(),
+            expense: amount
+        }
+        const request = {
+            method : 'PUT', 
+            mode : 'cors',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(data),
+        }
+        //console.log(request);
+        const response = await fetch(`http://localhost:8000/chart`,request);
+        alert("your data has been updated");
+    }
+    const deletechart = async () => {
+        const data = {
+            name: name,
+            day: startDate.getDate()
+        }
+        const request = {
+            method : 'DELETE', 
+            mode : 'cors',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        console.log(request);
+        const response = await fetch(`http://localhost:8000/chart`,request);
+        alert("your data has been deleted");
+    }
     const [startDate, setStartDate] = useState(new Date());
     const [amount,setAmount] = useState(0);
-    const [data,setData] = useState([{x:0,y:initialAmount}]);
+    //console.log(chartdata); 
     return(
         <div className="Inputform">
             <Container>
@@ -34,51 +86,26 @@ const Inputform = ({initialAmount}) => {
             </Col>  
                 <Col>
                  <Button variant="success" onClick= {(e)=>{
-                     const lasty = data[data.length - 1].y;
-                     setData([...data,{x:startDate.getDate(),y:lasty-amount}])
-                     setAmount(0);
+                     postchart();
+                     getchart(name);
                  }}> Submit </Button>
                 </Col>
                 <Col>
                  <Button variant="warning" onClick= {(e)=>{
-                     //Updation
-                     //since data is const 
-                     //duplicating to edit
-                     let newData = data.filter(()=>{return true});
-                     for (let i=0;i<newData.length;i++){
-                         if(newData[i].x === startDate.getDate()){
-                             // since x=0 will always be defined and startdate cant be 0
-                             // i-1 will not be undefined 
-                             // so actuall amount = previous amount - current amount 
-                             newData[i].y = newData[i-1].y - amount;
-                         }
-                     }
-                     setData(newData);
+                     putchart();
+                     getchart(name);
                  }}> Update </Button>
                 </Col>
                 <Col>
                  <Button variant="danger" onClick= {(e)=>{
                      //Deletion
-                     //since data is const 
-                     //duplicating to edit
-                     let newData = data.filter(()=>{return true});
-                      //const index = newData.indexOf(startDate.getDate());
-                     //since newdata is a array of object 
-                     //object should be used in indexof which we cant 
-                     //so using this ...
-                    
-                     for (let i=0;i<newData.length;i++){
-                        if(newData[i].x === startDate.getDate()){
-                            console.log(newData.splice(i,1));
-                            //alert("entry deleted");
-                        }
-                    }
-                    setData(newData);
+                     deletechart()
+                     getchart(name)
                  }}> Delete </Button>
                 </Col>
                 </Row>
                 <Row>
-                    <Graph data={data}/>
+                    <Graph chartdata={chartdata} initialAmount={initialAmount}/>
                 </Row>
             </Container>
         </div>

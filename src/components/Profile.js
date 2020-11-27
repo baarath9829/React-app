@@ -3,11 +3,21 @@ import {Button,Collapse} from 'react-bootstrap';
 import Inputform from './Inputform';
 
 const Profile = ({name,initialAmount}) => {
+    const [chartdata, setChartdata] = useState([]);
+    const getchart = async (name) => {
+        const response = await fetch(`http://localhost:8000/chart?name=${name}`);
+        const data = await response.json();
+        setChartdata(data);
+    }
     const [open, setopen] = useState(false);
+    //console.log(initialAmount);
     return (
         <div className="Profile">
             <Button
-                onClick={() => setopen(!open)}
+                onClick={() => {
+                    getchart(name)
+                    setopen(!open)
+                }}
                 aria-controls="profile-collapse-container"
                 aria-expanded={open}
                 variant = "light"
@@ -17,7 +27,7 @@ const Profile = ({name,initialAmount}) => {
             
             <Collapse in={open}>
                 <div id="profile-collapse-container">
-                    <Inputform initialAmount={initialAmount}/>
+                    <Inputform name={name} initialAmount={initialAmount} chartdata={chartdata} getchart={getchart}/>
                 </div>
             </Collapse>
         </div>

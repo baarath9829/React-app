@@ -1,9 +1,25 @@
-import React from 'react';
+//import {useState} from 'react';
 import CanvasJSReact from './canvasjs.react'
 
 
-const Graph = ({data}) => {
+const Graph = ({chartdata,initialAmount}) => {
     const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+    let data = [];
+    let obj = {
+        x : 0,
+        y : initialAmount
+    }
+    data = [...data,obj];
+    let lasty = initialAmount;
+    for(let element of chartdata.sort((a,b) => (a.day > b.day)? 1 : -1)){
+        let obj = {
+            x : element.day,
+            y : lasty - element.expense
+        }
+        //setData([...data,obj])
+        data = [...data,obj]
+        lasty = lasty - element.expense
+    }
     const options = {
         animationEnabled: true,
         //exportEnabled: true,
