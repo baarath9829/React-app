@@ -13,13 +13,12 @@ const Inputform = ({name,initialAmount,chartdata,getchart}) => {
         }
         const request = {
             method : 'POST', 
-            mode : 'cors',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            //body: JSON.stringify(data)
             body: JSON.stringify(data)
         }
-        //console.log(request);
+        console.log(request);
         const response = await fetch(`http://localhost:8000/chart`,request);
         alert("your data has been submited");
     }
@@ -31,13 +30,13 @@ const Inputform = ({name,initialAmount,chartdata,getchart}) => {
         }
         const request = {
             method : 'PUT', 
-            mode : 'cors',
+            mode: 'cors',
             headers: {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify(data),
         }
-        //console.log(request);
+        console.log(request);
         const response = await fetch(`http://localhost:8000/chart`,request);
         alert("your data has been updated");
     }
@@ -48,7 +47,7 @@ const Inputform = ({name,initialAmount,chartdata,getchart}) => {
         }
         const request = {
             method : 'DELETE', 
-            mode : 'cors',
+            mode: 'cors',
             headers: {
                 'Content-Type' : 'application/json'
             },

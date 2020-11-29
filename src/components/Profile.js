@@ -8,6 +8,7 @@ const Profile = ({name,initialAmount}) => {
         const response = await fetch(`http://localhost:8000/chart?name=${name}`);
         const data = await response.json();
         setChartdata(data);
+        console.log(chartdata);
     }
     const [open, setopen] = useState(false);
     //console.log(initialAmount);
